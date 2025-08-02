@@ -1,0 +1,591 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Personal Data Protection Act, 2023</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 16px;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(to right, #FF671F 50%, rgb(19, 136, 8) 50%);
+            color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            padding: 20px;
+            font-size: 16px;
+        }
+
+        .sidebar h2 {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-align: center;
+            line-height: 2;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin: 10px 0;
+            line-height: 2;
+        }
+
+        .sidebar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .dropdown {
+            margin-left: 10px;
+            display: none;
+        }
+
+        .dropdown.active {
+            display: block;
+        }
+
+        .dropdown li {
+            margin: 5px 0;
+            line-height: 2;
+        }
+
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+            width: calc(100% - 270px);
+        }
+
+        .section {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        .section h1, .section h2, .section h3 {
+            color: #000000;
+            text-align: center;
+        }
+
+        .section p, .section li {
+            line-height: 1.5;
+            color: #000000;
+            text-align: justify;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #000000;
+        }
+
+        th {
+            background-color: #d3d3d3;
+            text-align: center;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+            text-align: justify;
+        }
+
+        #intro { background-color: #e8f4f8; }
+        #chapter-one { background-color: #fef9e7; }
+        #chapter-two { background-color: #e8f8e8; }
+        #chapter-three { background-color: #f4e8f8; }
+        #chapter-four { background-color: #e8e8f8; }
+        #chapter-five { background-color: #f8e8e8; }
+        #chapter-six { background-color: #e8f4f8; }
+        #chapter-seven { background-color: #fef9e7; }
+        #chapter-eight { background-color: #e8f8e8; }
+        #chapter-nine { background-color: #f4e8f8; }
+        #schedule { background-color: #e8f4f8; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Chapters</h2>
+        <ul>
+            <li><a href="#intro">Introduction</a></li>
+            <li>
+                <a href="#chapter-one" class="chapter-link">1: Preliminary</a>
+                <ul class="dropdown" id="dropdown-chapter-one">
+                    <li><a href="#article-1">Article 1</a></li>
+                    <li><a href="#article-2">Article 2</a></li>
+                    <li><a href="#article-3">Article 3</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#chapter-two" class="chapter-link">2: Obligations of Data Fiduciary</a>
+                <ul class="dropdown" id="dropdown-chapter-two">
+                    <li><a href="#article-4">Article 4</a></li>
+                    <li><a href="#article-5">Article 5</a></li>
+                    <li><a href="#article-6">Article 6</a></li>
+                    <li><a href="#article-7">Article 7</a></li>
+                    <li><a href="#article-8">Article 8</a></li>
+                    <li><a href="#article-9">Article 9</a></li>
+                    <li><a href="#article-10">Article 10</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#chapter-three" class="chapter-link">3: Rights and Duties of Data Principal</a>
+                <ul class="dropdown" id="dropdown-chapter-three">
+                    <li><a href="#article-11">Article 11</a></li>
+                    <li><a href="#article-12">Article 12</a></li>
+                    <li><a href="#article-13">Article 13</a></li>
+                    <li><a href="#article-14">Article 14</a></li>
+                    <li><a href="#article-15">Article 15</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#chapter-four" class="chapter-link">4: Special Provisions</a>
+                <ul class="dropdown" id="dropdown-chapter-four">
+                    <li><a href="#article-16">Article 16</a></li>
+                    <li><a href="#article-17">Article 17</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#chapter-five" class="chapter-link">5: Data Protection Board of India</a>
+                <ul class="dropdown" id="dropdown-chapter-five">
+                    <li><a href="#article-18">Article 18</a></li>
+                    <li><a href="#article-19">Article 19</a></li>
+                    <li><a href="#article-20">Article 20</a></li>
+                    <li><a href="#article-21">Article 21</a></li>
+                    <li><a href="#article-22">Article 22</a></li>
+                    <li><a href="#article-23">Article 23</a></li>
+                    <li><a href="#article-24">Article 24</a></li>
+                    <li><a href="#article-25">Article 25</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#chapter-six" class="chapter-link">6: Powers, Functions, and Procedure</a>
+                <ul class="dropdown" id="dropdown-chapter-six">
+                    <li><a href="#article-26">Article 26</a></li>
+                    <li><a href="#article-27">Article 27</a></li>
+                    <li><a href="#article-28">Article 28</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#chapter-seven" class="chapter-link">7: Appeal and Alternate Dispute Resolution</a>
+                <ul class="dropdown" id="dropdown-chapter-seven">
+                    <li><a href="#article-29">Article 29</a></li>
+                    <li><a href="#article-30">Article 30</a></li>
+                    <li><a href="#article-31">Article 31</a></li>
+                    <li><a href="#article-32">Article 32</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#chapter-eight" class="chapter-link">8: Penalties and Adjudication</a>
+                <ul class="dropdown" id="dropdown-chapter-eight">
+                    <li><a href="#article-33">Article 33</a></li>
+                    <li><a href="#article-34">Article 34</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#chapter-nine" class="chapter-link">9: Miscellaneous</a>
+                <ul class="dropdown" id="dropdown-chapter-nine">
+                    <li><a href="#article-35">Article 35</a></li>
+                    <li><a href="#article-36">Article 36</a></li>
+                    <li><a href="#article-37">Article 37</a></li>
+                    <li><a href="#article-38">Article 38</a></li>
+                    <li><a href="#article-39">Article 39</a></li>
+                    <li><a href="#article-40">Article 40</a></li>
+                    <li><a href="#article-41">Article 41</a></li>
+                    <li><a href="#article-42">Article 42</a></li>
+                    <li><a href="#article-43">Article 43</a></li>
+                    <li><a href="#article-44">Article 44</a></li>
+                </ul>
+            </li>
+            <li><a href="#schedule">Schedule: Penalties</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div id="intro" class="section">
+            <h1>Digital Personal Data Protection Act, 2023</h1>
+            <p>The Gazette of India Extraordinary<br>
+            Published by Authority<br>
+            Uploaded by the Manager, Government of India Press, Minto Road, New Delhi-110002<br>
+            Published by the Controller of Publications, Delhi-110054</p>
+            <p>An Act to provide for the processing of digital personal data in a manner that recognises both the right of individuals to protect their personal data and the need to process such personal data for lawful purposes and for matters connected therewith or incidental thereto.</p>
+            <p>BE it enacted by Parliament in the Seventy-fourth Year of the Republic of India as follows:</p>
+            <p>This document is an official publication as per the Gazette of India.</p>
+        </div>
+
+        <div id="chapter-one" class="section">
+            <h2>Chapter 1: Preliminary</h2>
+            <h3 id="article-1">Article 1</h3>
+            <p><strong>Section (1):</strong> This Act may be called the Digital Personal Data Protection Act, 2023.</p>
+            <p><strong>Section (2):</strong> It shall come into force on such date as the Central Government may, by notification in the Official Gazette, appoint and different dates may be appointed for different provisions of this Act and any reference in any such provision to the commencement of this Act shall be construed as a reference to the coming into force of that provision.</p>
+            <h3 id="article-2">Article 2: Definitions</h3>
+            <p>In this Act, unless the context otherwise requires,—</p>
+            <ul>
+                <li><strong>Section (a):</strong> "Appellate Tribunal" means the Telecom Disputes Settlement and Appellate Tribunal established under article 14 of the Telecom Regulatory Authority of India Act, 1997;</li>
+                <li><strong>Section (b):</strong> "automated" means any digital process capable of operating automatically in response to instructions given or otherwise for the purpose of processing data;</li>
+                <li><strong>Section (c):</strong> "Board" means the Data Protection Board of India established by the Central Government under article 18;</li>
+                <li><strong>Section (d):</strong> "certain legitimate uses" means the uses referred to in article 7;</li>
+                <li><strong>Section (e):</strong> "Chairperson" means the Chairperson of the Board;</li>
+                <li><strong>Section (f):</strong> "child" means an individual who has not completed the age of eighteen years;</li>
+                <li><strong>Section (g):</strong> "Consent Manager" means a person registered with the Board, who acts as a single point of contact to enable a Data Principal to give, manage, review and withdraw her consent through an accessible, transparent and interoperable platform;</li>
+                <li><strong>Section (h):</strong> "data" means a representation of information, facts, concepts, opinions or instructions in a manner suitable for communication, interpretation or processing by human beings or by automated means;</li>
+                <li><strong>Section (i):</strong> "Data Fiduciary" means any person who alone or in conjunction with other persons determines the purpose and means of processing of personal data;</li>
+                <li><strong>Section (j):</strong> "Data Principal" means the individual to whom the personal data relates and where such individual is—<br>
+                    <strong>Section (i):</strong> a child, includes the parents or lawful guardian of such a child;<br>
+                    <strong>Section (ii):</strong> a person with disability, includes her lawful guardian, acting on her behalf;</li>
+                <li><strong>Section (k):</strong> "Data Processor" means any person who processes personal data on behalf of a Data Fiduciary;</li>
+                <li>Ascertainable number of additional definitions omitted for brevity...</li>
+            </ul>
+            <h3 id="article-3">Article 3</h3>
+            <p>Subject to the provisions of this Act, it shall—</p>
+            <ul>
+                <li><strong>Section (a):</strong> apply to the processing of digital personal data within the territory of India where the personal data is collected—<br>
+                    <strong>Section (i):</strong> in digital form; or<br>
+                    <strong>Section (ii):</strong> in non-digital form and digitised subsequently;</li>
+                <li><strong>Section (b):</strong> also apply to processing of digital personal data outside the territory of India, if such processing is in connection with any activity related to offering of goods or services to Data Principals within the territory of India;</li>
+                <li><strong>Section (c):</strong> not apply to—<br>
+                    <strong>Section (i):</strong> personal data processed by an individual for any personal or domestic purpose; and<br>
+                    <strong>Section (ii):</strong> personal data that is made or caused to be made publicly available by—<br>
+                        <strong>Section (A):</strong> the Data Principal to whom such personal data relates; or<br>
+                        <strong>Section (B):</strong> any other person who is under an obligation under any law for the time being in force in India to make such personal data publicly available.</li>
+            </ul>
+            <p><em>Illustration: X, an individual, while blogging her views, has publicly made available her personal data on social media. In such case, the provisions of this Act shall not apply.</em></p>
+        </div>
+
+        <div id="chapter-two" class="section">
+            <h2>Chapter 2: Obligations of Data Fiduciary</h2>
+            <h3 id="article-4">Article 4</h3>
+            <p><strong>Section (1):</strong> A person may process the personal data of a Data Principal only in accordance with the provisions of this Act and for a lawful purpose,—</p>
+            <ul>
+                <li><strong>Section (a):</strong> for which the Data Principal has given her consent; or</li>
+                <li><strong>Section (b):</strong> for certain legitimate uses.</li>
+            </ul>
+            <p><strong>Section (2):</strong> For the purposes of this article, the expression "lawful purpose" means any purpose which is not expressly forbidden by law.</p>
+            <h3 id="article-5">Article 5</h3>
+            <p><strong>Section (1):</strong> Every request made to a Data Principal under article 6 for consent shall be accompanied or preceded by a notice given by the Data Fiduciary to the Data Principal, informing her,—</p>
+            <ul>
+                <li><strong>Section (i):</strong> the personal data and the purpose for which the same is proposed to be processed;</li>
+                <li><strong>Section (ii):</strong> the manner in which she may exercise her rights under sub-section (4) of article 6 and article 13; and</li>
+                <li><strong>Section (iii):</strong> the manner in which the Data Principal may make a complaint to the Board, in such manner and as may be prescribed.</li>
+            </ul>
+            <p><em>Illustration: X, an individual, opens a bank account using the mobile app or website of Y, a bank. To complete the Know-Your-Customer requirements under law for opening of bank account, X opts for processing of her personal data by Y in a live, video-based customer identification process. Y shall accompany or precede the request for the personal data with notice to X, describing the personal data and the purpose of its processing.</em></p>
+            <p>Additional sub-sections and illustrations omitted for brevity...</p>
+            <h3 id="article-6">Article 6</h3>
+            <p><strong>Section (1):</strong> The consent given by the Data Principal shall be free, specific, informed, unconditional and unambiguous with a clear affirmative action, and shall signify an agreement to the processing of her personal data for the specified purpose and be limited to such personal data as is necessary for such specified purpose.</p>
+            <p><em>Illustration: X, an individual, downloads Y, a telemedicine app. Y requests the consent of X for (i) the processing of her personal data for making available telemedicine services, and (ii) accessing her mobile phone contact list, and X signifies her consent to both. Since phone contact list is not necessary for making available telemedicine services, her consent shall be limited to the processing of her personal data for making available telemedicine services.</em></p>
+            <p>Additional sub-sections and illustrations omitted for brevity...</p>
+            <h3 id="article-7">Article 7</h3>
+            <p>A Data Fiduciary may process personal data of a Data Principal for any of following legitimate uses, namely:—</p>
+            <ul>
+                <li><strong>Section (a):</strong> for the specified purpose for which the Data Principal has voluntarily provided her personal data to the Data Fiduciary, and in respect of which she has not indicated to the Data Fiduciary that she does not consent to the use of her personal data.</li>
+                <li><strong>Section (b):</strong> for the State and any of its instrumentalities to provide or issue to the Data Principal such subsidy, benefit, service, certificate, licence or permit as may be prescribed, where—<br>
+                    <strong>Section (i):</strong> she has previously consented to the processing of her personal data by the State or any of its instrumentalities for any subsidy, benefit, service, certificate, licence or permit; or<br>
+                    <strong>Section (ii):</strong> such personal data is available in digital form in, or in non-digital form and digitised subsequently from, any database, register, book or other document which is maintained by the State or any of its instrumentalities and is notified by the Central Government.</li>
+            </ul>
+            <p><em>Illustration: X, a pregnant woman, enrols herself on an app or website to avail of government's maternity benefits programme, while consenting to provide her personal data for the purpose of availing of such benefits. Government may process the personal data of X processing to determine her eligibility to receive any other prescribed benefit from the government.</em></p>
+            <p>Additional clauses omitted for brevity...</p>
+            <h3 id="article-8">Article 8</h3>
+            <p><strong>Section (1):</strong> A Data Fiduciary shall, irrespective of any agreement to the contrary or failure of a Data Principal to carry out the duties provided under this Act, be responsible for complying with the provisions of this Act and the rules made thereunder in respect of any processing undertaken by it or on its behalf by a Data Processor.</p>
+            <p>Additional sub-sections and illustrations omitted for brevity...</p>
+            <h3 id="article-9">Article 9</h3>
+            <p><strong>Section (1):</strong> The Data Fiduciary shall, before processing any personal data of a child or a person with disability who has a lawful guardian obtain verifiable consent of the parent of such child or the lawful guardian, as the case may be, in such manner as may be prescribed.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-10">Article 10</h3>
+            <p><strong>Section (1):</strong> The Central Government may notify any Data Fiduciary or class of Data Fiduciaries as Significant Data Fiduciary, on the basis of an assessment of such relevant factors as it may determine, including—</p>
+            <ul>
+                <li><strong>Section (a):</strong> the volume and sensitivity of personal data processed;</li>
+                <li><strong>Section (b):</strong> risk to the rights of Data Principal;</li>
+            </ul>
+            <p>Additional factors and sub-sections omitted for brevity...</p>
+        </div>
+
+        <div id="chapter-three" class="section">
+            <h2>Chapter 3: Rights and Duties of Data Principal</h2>
+            <h3 id="article-11">Article 11</h3>
+            <p><strong>Section (1):</strong> The Data Principal shall have the right to obtain from the Data Fiduciary to whom she has previously given consent, including consent as referred to in <strong>Section (a):</strong> of article 7, for processing of personal data, upon making to it a request in such manner as may be prescribed,—</p>
+            <ul>
+                <li><strong>Section (a):</strong> a summary of personal data which is being processed by such Data Fiduciary and the processing activities undertaken by that Data Fiduciary with respect to such personal data;</li>
+                <li><strong>Section (b):</strong> the identities of all other Data Fiduciaries and Data Processors with whom the personal data has been shared by such Data Fiduciary, along with a description of the personal data so shared; and</li>
+                <li><strong>Section (c):</strong> any other information related to the personal data of such Data Principal and its processing, as may be prescribed.</li>
+            </ul>
+            <h3 id="article-12">Article 12</h3>
+            <p><strong>Section (1):</strong> A Data Principal shall have the right to correction, completion, updating and erasure of her personal data for the processing of which she has previously given consent, including consent as referred to in <strong>Section (a):</strong> of article 7, in accordance with any requirement or procedure under any law for the time being in force.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-13">Article 13</h3>
+            <p><strong>Section (1):</strong> A Data Principal shall have the right to have readily available means of grievance redressal provided by a Data Fiduciary or Consent Manager in respect of any act or omission of such Data Fiduciary or Consent Manager regarding the performance of its obligations in relation to the personal data of such Data Principal or the exercise of her rights under the provisions of this Act and the rules made thereunder.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-14">Article 14</h3>
+            <p><strong>Section (1):</strong> A Data Principal shall have the right to nominate, in such manner as may be prescribed, any other individual, who shall, in the event of death or incapacity of the Data Principal, exercise the rights of the Data Principal in accordance with the provisions of this Act and the rules made thereunder.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-15">Article 15</h3>
+            <p>A Data Principal shall perform the following duties, namely:—</p>
+            <ul>
+                <li><strong>Section (a):</strong> comply with the provisions of all applicable laws for the time being in force while exercising rights under the provisions of this Act;</li>
+                <li><strong>Section (b):</strong> to ensure not to impersonate another person while providing her personal data for a specified purpose;</li>
+            </ul>
+            <p>Additional duties omitted for brevity...</p>
+        </div>
+
+        <div id="chapter-four" class="section">
+            <h2>Chapter 4: Special Provisions</h2>
+            <h3 id="article-16">Article 16</h3>
+            <p><strong>Section (1):</strong> The Central Government may, by notification, restrict the transfer of personal data by a Data Fiduciary for processing to such country or territory outside India as may be so notified.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-17">Article 17</h3>
+            <p><strong>Section (1):</strong> The provisions of Chapter 2, except sub-sections (1) and (5) of article 8, and those of Chapter 3 and article 16 shall not apply where—</p>
+            <ul>
+                <li><strong>Section (a):</strong> the processing of personal data is necessary for enforcing any legal right or claim;</li>
+                <li><strong>Section (b):</strong> the processing of personal data by any court or tribunal or any other body in India which is entrusted by law with the performance of any judicial or quasi-judicial or regulatory or supervisory function, where such processing is necessary for the performance of such function;</li>
+            </ul>
+            <p><em>Illustration: X, an individual, takes a loan from Y, a bank. X defaults in paying her monthly loan repayment instalment on the date on which it falls due. Y may process the personal data of X for ascertaining her financial information and assets and liabilities.</em></p>
+            <p>Additional clauses and sub-sections omitted for brevity...</p>
+        </div>
+
+        <div id="chapter-five" class="section">
+            <h2>Chapter 5: Data Protection Board of India</h2>
+            <h3 id="article-18">Article 18</h3>
+            <p><strong>Section (1):</strong> With effect from such date as the Central Government may, by notification, appoint, there shall be established, for the purposes of this Act, a Board to be called the Data Protection Board of India.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-19">Article 19</h3>
+            <p><strong>Section (1):</strong> The Board shall consist of a Chairperson and such number of other Members as the Central Government may notify.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-20">Article 20</h3>
+            <p><strong>Section (1):</strong> The salary, allowances and other terms and conditions of service of the Chairperson and other Members shall be such as may be prescribed, and shall not be varied to their disadvantage after their appointment.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-21">Article 21</h3>
+            <p><strong>Section (1):</strong> A person shall be disqualified for being appointed and continued as the Chairperson or a Member, if she—</p>
+            <ul>
+                <li><strong>Section (a):</strong> has been adjudged as an insolvent;</li>
+                <li><strong>Section (b):</strong> has been convicted of an offence, which in the opinion of the Central Government, involves moral turpitude;</li>
+            </ul>
+            <p>Additional clauses and sub-sections omitted for brevity...</p>
+            <h3 id="article-22">Article 22</h3>
+            <p><strong>Section (1):</strong> The Chairperson or any other Member may give notice in writing to the Central Government of resigning from her office, and such resignation shall be effective from the date on which the Central Government permits her to relinquish office, or upon expiry of a period of three months from the date of receipt of such notice, or upon a duly appointed successor entering upon her office, or upon the expiry of the term of her office, whichever is earliest.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-23">Article 23</h3>
+            <p><strong>Section (1):</strong> The Board shall observe such procedure in regard to the holding of and transaction of business at its meetings, including by digital means, and authenticate its orders, directions and instruments in such manner as may be prescribed.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-24">Article 24</h3>
+            <p>The Board may, with previous approval of the Central Government, appoint such officers and employees as it may deem necessary for the efficient discharge of its functions under the provisions of this Act, on such terms and conditions of appointment and service as may be prescribed.</p>
+            <h3 id="article-25">Article 25</h3>
+            <p>The Chairperson, Members, officers and employees of the Board shall be deemed, when acting or purporting to act in pursuance of provisions of this Act, to be public servants within the meaning of <strong>Section 21:</strong> of the Indian Penal Code.</p>
+        </div>
+
+        <div id="chapter-six" class="section">
+            <h2>Chapter 6: Powers, Functions, and Procedure</h2>
+            <h3 id="article-26">Article 26</h3>
+            <p>The Chairperson shall exercise the following powers, namely:—</p>
+            <ul>
+                <li><strong>Section (a):</strong> general superintendence and giving direction in respect of all administrative matters of the Board;</li>
+                <li><strong>Section (b):</strong> authorise any officer of the Board to scrutinise any intimation, complaint, reference or correspondence addressed to the Board; and</li>
+            </ul>
+            <p>Additional clauses omitted for brevity...</p>
+            <h3 id="article-27">Article 27</h3>
+            <p><strong>Section (1):</strong> The Board shall exercise and perform the following powers and functions, namely:—</p>
+            <ul>
+                <li><strong>Section (a):</strong> on receipt of an intimation of personal data breach under sub-section (6) of article 8, to direct any urgent remedial or mitigation measures in the event of a personal data breach, and to inquire into such personal data breach and impose penalty as provided in this Act;</li>
+            </ul>
+            <p>Additional clauses and sub-sections omitted for brevity...</p>
+            <h3 id="article-28">Article 28</h3>
+            <p><strong>Section (1):</strong> The Board shall function as an independent body and shall, as far as practicable, function as a digital office, with the receipt of complaints and the allocation, hearing and pronouncement of decisions in respect of the same being digital by design, and adopt such techno-legal measures as may be prescribed.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+        </div>
+
+        <div id="chapter-seven" class="section">
+            <h2>Chapter 7: Appeal and Alternate Dispute Resolution</h2>
+            <h3 id="article-29">Article 29</h3>
+            <p><strong>Section (1):</strong> Any person aggrieved by an order or direction made by the Board under this Act may prefer an appeal before the Appellate Tribunal.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-30">Article 30</h3>
+            <p><strong>Section (1):</strong> An order passed by the Appellate Tribunal under this Act shall be executable by it as a decree of civil court, and for this purpose, the Appellate Tribunal shall have all the powers of a civil court.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-31">Article 31</h3>
+            <p>If the Board is of the opinion that any complaint may be resolved by mediation, it may direct the parties concerned to attempt resolution of the dispute through such mediation by such mediator as the parties may mutually agree upon, or as provided for under any law for the time being in force in India.</p>
+            <h3 id="article-32">Article 32</h3>
+            <p><strong>Section (1):</strong> The Board may accept a voluntary undertaking in respect of any matter related to observance of the provisions of this Act from any person at any stage of a proceeding under article 28.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+        </div>
+
+        <div id="chapter-eight" class="section">
+            <h2>Chapter 8: Penalties and Adjudication</h2>
+            <h3 id="article-33">Article 33</h3>
+            <p><strong>Section (1):</strong> If the Board determines on conclusion of an inquiry that breach of the provisions of this Act or the rules made thereunder by a person is significant, it may, after giving the person an opportunity of being heard, impose such monetary penalty specified in the Schedule.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-34">Article 34</h3>
+            <p>All sums realised by way of penalties imposed by the Board under this Act, shall be credited to the Consolidated Fund of India.</p>
+        </div>
+
+        <div id="chapter-nine" class="section">
+            <h2>Chapter 9: Miscellaneous</h2>
+            <h3 id="article-35">Article 35</h3>
+            <p>No suit, prosecution or other legal proceedings shall lie against the Central Government, the Board, its Chairperson and any Member, officer or employee thereof for anything which is done or intended to be done in good faith under the provisions of this Act or the rules made thereunder.</p>
+            <h3 id="article-36">Article 36</h3>
+            <p>The Central Government may, for the purposes of this Act, require the Board and any Data Fiduciary or intermediary to furnish such information as it may call for.</p>
+            <h3 id="article-37">Article 37</h3>
+            <p><strong>Section (1):</strong> The Central Government or any of its officers specially authorised by it in this behalf may, upon receipt of a reference in writing from the Board that—</p>
+            <ul>
+                <li><strong>Section (a):</strong> intimates the imposition of monetary penalty by the Board on a Data Fiduciary in two or more instances; and</li>
+                <li><strong>Section (b):</strong> advises, in the interests of the general public, the blocking for access by the public to any information generated, transmitted, received, stored or hosted, in any computer resource that enables such Data Fiduciary to carry on any activity relating to offering of goods or services to Data Principals within the territory of India.</li>
+            </ul>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-38">Article 38</h3>
+            <p><strong>Section (1):</strong> The provisions of this Act shall be in addition to and not in derogation of any other law for the time being in force.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-39">Article 39</h3>
+            <p>No civil court shall have the jurisdiction to entertain any suit or proceeding in respect of any matter for which the Board is empowered under the provisions of this Act and no injunction shall be granted by any court or other authority in respect of any action taken or to be taken in pursuance of any power under the provisions of this Act.</p>
+            <h3 id="article-40">Article 40</h3>
+            <p><strong>Section (1):</strong> The Central Government may, by notification, and subject to the condition of previous publication, make rules not inconsistent with the provisions of this Act, to carry out the purposes of this Act.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-41">Article 41</h3>
+            <p>Every rule made and every notification issued under article 16 and article 42 of this Act shall be laid, as soon as may be after it is made, before each House of Parliament...</p>
+            <p>Additional details omitted for brevity...</p>
+            <h3 id="article-42">Article 42</h3>
+            <p><strong>Section (1):</strong> The Central Government may, by notification, amend the Schedule, subject to the restriction that no such notification shall have the effect of increasing any penalty specified therein to more than twice of what was specified in it when this Act was originally enacted.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-43">Article 43</h3>
+            <p><strong>Section (1):</strong> If any difficulty arises in giving effect to the provisions of this Act, the Central Government may, by order published in the Official Gazette, make such provisions not inconsistent with the provisions of this Act as may appear to it to be necessary or expedient for removing the difficulty.</p>
+            <p>Additional sub-sections omitted for brevity...</p>
+            <h3 id="article-44">Article 44</h3>
+            <p><strong>Section (1):</strong> In article 14 of the Telecom Regulatory Authority of India Act, 1997, in clause (c), for sub-clauses (i) and (ii), the following sub-clauses shall be substituted, namely:—</p>
+            <ul>
+                <li><strong>Section (i):</strong> the Appellate Tribunal under the Information Technology Act, 2000;</li>
+                <li><strong>Section (ii):</strong> the Appellate Tribunal under the Airports Economic Regulatory Authority of India Act, 2008; and</li>
+                <li><strong>Section (iii):</strong> the Appellate Tribunal under the Digital Personal Data Protection Act, 2023.</li>
+            </ul>
+            <p>Additional amendments omitted for brevity...</p>
+        </div>
+
+        <div id="schedule" class="section">
+            <h2>Schedule: Penalties</h2>
+            <table>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Breach of provisions of this Act or rules made thereunder</th>
+                    <th>Penalty</th>
+                </tr>
+                <tr>
+                    <td>1.</td>
+                    <td>Breach in observing the obligation of Data Fiduciary to take reasonable security safeguards to prevent personal data breach under sub-section (5) of article 8.</td>
+                    <td>May extend to two hundred and fifty crore rupees.</td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>Breach in observing the obligation to give the Board or affected Data Principal notice of a personal data breach under sub-section (6) of article 8.</td>
+                    <td>May extend to two hundred crore rupees.</td>
+                </tr>
+                <tr>
+                    <td>3.</td>
+                    <td>Breach in observance of additional obligations in relation to children under article 9.</td>
+                    <td>May extend to two hundred crore rupees.</td>
+                </tr>
+                <tr>
+                    <td>4.</td>
+                    <td>Breach in observance of additional obligations of Significant Data Fiduciary under article 10.</td>
+                    <td>May extend to one hundred and fifty crore rupees.</td>
+                </tr>
+                <tr>
+                    <td>5.</td>
+                    <td>Breach in observance of the duties under article 15.</td>
+                    <td>May extend to ten thousand rupees.</td>
+                </tr>
+                <tr>
+                    <td>6.</td>
+                    <td>Breach of any term of voluntary undertaking accepted by the Board under article 32.</td>
+                    <td>Up to the extent applicable for the breach in respect of which the proceedings under article 28 were instituted.</td>
+                </tr>
+                <tr>
+                    <td>7.</td>
+                    <td>Breach of any other provision of this Act or the rules made thereunder.</td>
+                    <td>May extend to fifty crore rupees.</td>
+                </tr>
+            </table>
+            <p>DR. REETA VASISHTA<br>
+            Secretary to the Govt. of India</p>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        document.querySelectorAll('.chapter-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const dropdown = this.nextElementSibling;
+                dropdown.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Guide</title>
+    <!-- Tailwind CSS CDN for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom styles for specific components -->
+    <style>
+        /* Smooth scroll behavior for navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Card hover effect for navigation options */
+        .nav-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-blue-600">Privacy Guide</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="privacy-laws.html" class="text-gray-600 hover:text-blue-600 px-3 py-2">Privacy Laws</a>
+                    <a href="privacy-management.html" class="text-gray-600 hover:text-blue-600 px-3 py-2">Privacy Management</a>
+                    <a href="privacy-technology.html" class="text-gray-600 hover:text-blue-600 px-3 py-2">Privacy Technology</a>
+                    <a href="about.html" class="text-gray-600 hover:text-blue-600 px-3 py-2">About</a>
+                    <a href="consultation.html" class="text-gray-600 hover:text-blue-600 px-3 py-2">Consultation<sup class="text-green-500">Free</sup></a>
+                    <a href="contact.html" class="text-gray-600 hover:text-blue-600 px-3 py-2">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Navigation Options -->
+    <section id="home" class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+        <div class="text-center max-w-4xl mx-auto px-4">
+            <h1 class="text-4xl sm:text-5xl font-bold mb-6">Your Trusted Privacy Resource</h1>
+            <p class="text-lg mb-10">Explore comprehensive information and resources on privacy laws, management, and technology.</p>
+            <!-- Navigation Options -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                <!-- Privacy Laws Card -->
+                <a href="privacy-laws.html" class="nav-card bg-white text-gray-800 rounded-lg shadow-md p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-2">Privacy Laws</h3>
+                    <p class="text-gray-600">Understand global privacy regulations and compliance requirements.</p>
+                </a>
+                <!-- Privacy Management Card -->
+                <a href="privacy-management.html" class="nav-card bg-white text-gray-800 rounded-lg shadow-md p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-2">Privacy Management</h3>
+                    <p class="text-gray-600">Learn best practices for managing and protecting personal data.</p>
+                </a>
+                <!-- Privacy Technology Card -->
+                <a href="privacy-technology.html" class="nav-card bg-white text-gray-800 rounded-lg shadow-md p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-2">Privacy Technology</h3>
+                    <p class="text-gray-600">Discover tools and technologies to enhance data security.</p>
+                </a>
+            </div>
+            <!-- CTA Button -->
+            <div>
+                <a href="consultation.html" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300 inline-block shadow-lg">
+                    Schedule a Free Consultation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 Privacy Guide. All rights reserved.</p>
+            <p class="mt-2">Committed to protecting your privacy.</p>
+        </div>
+    </footer>
+</body>
+</html>
